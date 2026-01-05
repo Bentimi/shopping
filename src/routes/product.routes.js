@@ -8,7 +8,7 @@ const { addProduct, allProducts, getProduct, editProduct, searchProduct, deleteP
 router.post('/add-product', isAuth, addProduct);
 router.get('/all-products', isAuth, allProducts);
 router.get('/get-product/:productId', isAuth, getProduct);
-router.put('/edit-product/:productId', isAuth, editProduct);
+router.patch('/edit-product/:productId', isAuth, editProduct);
 router.get('/search-product', isAuth, searchProduct);
 router.delete('/delete-product/:productId', isAuth, deleteProduct);
 

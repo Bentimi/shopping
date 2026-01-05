@@ -199,6 +199,10 @@ const verifyUser = async (req, res) => {
         }
 
         if (user.isVerified === true) {
+            user.otp = null;
+            user.otpExpiry = null;
+
+            await user.save()
             return res.status(400).json({ message: "User is already verified" });
         }
 
@@ -254,4 +258,29 @@ const verifyOtp = async (req, res) => {
     }
 }
 
-module.exports = { signup, login, getAllUsers, updateprofile, editprofile, deleteprofile, deleteUser, verifyUser, verifyOtp };
+const resendOtp = async (req, res) => {
+    const { email } = req.body;
+
+    try {
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.status(401).json({ message: "User not found" });
+        }
+
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        const otpexpiry = new Date(Date.now() + 10 * 60 * 1000);
+
+        user.otp = otp;
+        user.otpExpiry = otpexpiry;
+
+        await user.save();
+
+        return res.status(200).json({ message: "OTP sent successfully", otp });
+
+    } catch (e) {
+        return res.status(500).json({ message: "Internal server error" });
+    }
+}
+
+module.exports = { signup, login, getAllUsers, updateprofile, editprofile, deleteprofile, deleteUser, verifyUser, verifyOtp, resendOtp };

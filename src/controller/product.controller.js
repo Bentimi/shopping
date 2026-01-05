@@ -56,6 +56,10 @@ const allProducts = async (req, res) => {
 
         const products = await Product.find();
 
+        if (!products) {
+            return res.status(400).json({ message: "No product found" })
+        }
+
         return res.status(200).json({ products });
 
     } catch (e) {
@@ -96,9 +100,11 @@ const editProduct = async (req, res) => {
     try {
         const userAuth = await User.findById(userId);
         
-        if (!allowedRoles.includes(userAuth.role)) {
+        if ((!allowedRoles.includes(userAuth.role)) || !userAuth) {
             return res.status(200).json({ message: "Access denied" });
         }
+
+        // if (userAuth.role !== 'admin' || userAuth)
         
         if (userAuth.role === 'admin') {
             const updateproduct = await Product.findByIdAndUpdate(
