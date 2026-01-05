@@ -10,6 +10,11 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    gender: {
+        type: String,
+        enum: ['male', 'female', 'other'],
+        default: null,
+    },
     role: {
         type: String,
         enum: ['user', 'staff', 'admin', 'dispatch'],

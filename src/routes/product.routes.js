@@ -12,4 +12,5 @@ router.put('/edit-product/:productId', isAuth, editProduct);
 router.get('/search-product', isAuth, searchProduct);
 router.post('/delete-product/:productId', isAuth, deleteProduct);
 
+
 module.exports = router;
